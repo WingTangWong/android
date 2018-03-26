@@ -3,6 +3,7 @@
  *
  *   @author David A. Velasco
  *   @author Shashvat Kedia
+ *   @author Christian Schabesberger
  *   Copyright (C) 2018 ownCloud GmbH.
  *
  *   This program is free software: you can redistribute it and/or modify
@@ -27,6 +28,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
@@ -44,6 +46,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.owncloud.android.R;
+import com.owncloud.android.authentication.FingerprintManager;
 import com.owncloud.android.files.services.FileUploader;
 import com.owncloud.android.lib.common.utils.Log_OC;
 import com.owncloud.android.ui.dialog.ConfirmationDialogFragment;
@@ -246,6 +249,9 @@ public class UploadFilesActivity extends FileActivity implements
 
     @Override
     protected void onActivityResult(int requestCode,int resultCode,Intent capturedData){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            FingerprintManager.getFingerprintManager(this).bayPassUnlockOnce();
+        }
         if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
             new CheckAvailableSpaceTask(getCapturedImageFile().getAbsolutePath()).execute();
         } else if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_CANCELED){
