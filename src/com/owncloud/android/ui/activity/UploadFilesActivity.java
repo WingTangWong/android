@@ -47,6 +47,8 @@ import android.widget.TextView;
 
 import com.owncloud.android.R;
 import com.owncloud.android.authentication.FingerprintManager;
+import com.owncloud.android.authentication.PassCodeManager;
+import com.owncloud.android.authentication.PatternManager;
 import com.owncloud.android.files.services.FileUploader;
 import com.owncloud.android.lib.common.utils.Log_OC;
 import com.owncloud.android.ui.dialog.ConfirmationDialogFragment;
@@ -252,6 +254,9 @@ public class UploadFilesActivity extends FileActivity implements
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             FingerprintManager.getFingerprintManager(this).bayPassUnlockOnce();
         }
+        PassCodeManager.getPassCodeManager().bayPassUnlockOnce();
+        PatternManager.getPatternManager().bayPassUnlockOnce();
+
         if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
             new CheckAvailableSpaceTask(getCapturedImageFile().getAbsolutePath()).execute();
         } else if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_CANCELED){
